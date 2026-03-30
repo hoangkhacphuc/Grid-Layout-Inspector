@@ -68,10 +68,6 @@ The on/off switch in the popup header instantly shows or hides the grid on the c
 
 ## Settings Reference
 
-<table>
-<tr>
-<td>
-
 | Field | Default | Description |
 |---|---|---|
 | Container Width | `1280 px` | Maximum width of the column grid (centered) |
@@ -83,14 +79,10 @@ The on/off switch in the popup header instantly shows or hides the grid on the c
 | Row Color | `#3b82f6` @ 12% | Fill color for row bands |
 | Hover Color | `#f59e0b` @ 50% | Highlight color in Row Inspector mode |
 
-</td>
-<td valign="top" align="center" width="240">
 
-![Settings popup](images/popup.png)
-
-</td>
-</tr>
-</table>
+<p align="center">
+  <img src="images/popup.png" alt="Settings popup" width="400" />
+</p>
 
 ---
 
