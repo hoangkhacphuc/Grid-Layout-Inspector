@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grid Layout Inspector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup">
+
+    <!-- Header -->
+    <header class="popup__header">
+      <div class="popup__logo">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="4" height="18" rx="1" fill="currentColor" opacity="0.9"/>
+          <rect x="7" y="1" width="4" height="18" rx="1" fill="currentColor" opacity="0.7"/>
+          <rect x="13" y="1" width="4" height="18" rx="1" fill="currentColor" opacity="0.5"/>
+          <rect x="19" y="1" width="1" height="18" rx="0.5" fill="currentColor" opacity="0.3"/>
+        </svg>
+        <span>Grid Inspector</span>
+      </div>
+
+      <!-- Global enable toggle -->
+      <label class="toggle" id="toggle-global" title="Enable / disable grid overlay">
+        <input type="checkbox" id="switch-enabled" />
+        <span class="toggle__track">
+          <span class="toggle__thumb"></span>
+        </span>
+      </label>
+    </header>
+
+    <!-- Current site badge -->
+    <div class="site-badge">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M6 1C6 1 4 3.5 4 6s2 5 2 5" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M6 1C6 1 8 3.5 8 6s-2 5-2 5" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M1 6h10" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      <span id="current-origin" class="site-badge__url">—</span>
+    </div>
+
+    <!-- Settings form -->
+    <form class="settings" id="settings-form" novalidate>
+
+      <!-- Max width -->
+      <div class="field">
+        <label class="field__label" for="input-max-width">Container Width</label>
+        <div class="field__input-wrap">
+          <input type="number" id="input-max-width" class="input" min="320" max="3840" step="1" value="1280" />
+          <span class="field__unit">px</span>
+        </div>
+      </div>
+
+      <!-- Columns -->
+      <div class="field">
+        <label class="field__label" for="input-columns">Columns</label>
+        <div class="field__input-wrap">
+          <input type="number" id="input-columns" class="input" min="1" max="24" step="1" value="12" />
+          <span class="field__unit">col</span>
+        </div>
+      </div>
+
+      <!-- Column gutter -->
+      <div class="field">
+        <label class="field__label" for="input-col-gutter">Column Gutter</label>
+        <div class="field__input-wrap">
+          <input type="number" id="input-col-gutter" class="input" min="0" max="200" step="1" value="24" />
+          <span class="field__unit">px</span>
+        </div>
+      </div>
+
+      <!-- Row gutter -->
+      <div class="field">
+        <label class="field__label" for="input-row-gutter">Row Gutter</label>
+        <div class="field__input-wrap">
+          <input type="number" id="input-row-gutter" class="input" min="0" max="200" step="1" value="24" />
+          <span class="field__unit">px</span>
+        </div>
+      </div>
+
+      <!-- Row height (row band height for horizontal grid) -->
+      <div class="field">
+        <label class="field__label" for="input-row-height">Row Height</label>
+        <div class="field__input-wrap">
+          <input type="number" id="input-row-height" class="input" min="0" max="1000" step="1" value="80" />
+          <span class="field__unit">px</span>
+        </div>
+      </div>
+
+      <!-- Column color picker -->
+      <div class="field field--color">
+        <label class="field__label" for="input-color">Column Color</label>
+        <div class="field__color-wrap">
+          <div class="color-preview" id="color-preview"></div>
+          <input type="color" id="input-color-picker" class="input input--color-picker" value="#ff6b6b" />
+          <input type="text" id="input-color" class="input input--color-text" maxlength="9" value="#ff6b6b33" placeholder="#rrggbbaa" />
+          <div class="opacity-group">
+            <label class="field__label--small" for="input-opacity">Opacity</label>
+            <input type="range" id="input-opacity" class="slider" min="1" max="100" value="20" />
+            <span id="opacity-value" class="field__unit">20%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row color picker -->
+      <div class="field field--color">
+        <label class="field__label" for="input-row-color">Row Color</label>
+        <div class="field__color-wrap">
+          <div class="color-preview" id="row-color-preview"></div>
+          <input type="color" id="input-row-color-picker" class="input input--color-picker" value="#3b82f6" />
+          <input type="text" id="input-row-color" class="input input--color-text" maxlength="9" value="#3b82f61e" placeholder="#rrggbbaa" />
+          <div class="opacity-group">
+            <label class="field__label--small" for="input-row-opacity">Opacity</label>
+            <input type="range" id="input-row-opacity" class="slider" min="1" max="100" value="12" />
+            <span id="row-opacity-value" class="field__unit">12%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hover highlight color (used by Row Inspector mode) -->
+      <div class="field field--color">
+        <label class="field__label" for="input-hover-color">Hover Color</label>
+        <div class="field__color-wrap">
+          <div class="color-preview" id="hover-color-preview"></div>
+          <input type="color" id="input-hover-color-picker" class="input input--color-picker" value="#f59e0b" />
+          <input type="text" id="input-hover-color" class="input input--color-text" maxlength="9" value="#f59e0b80" placeholder="#rrggbbaa" />
+          <div class="opacity-group">
+            <label class="field__label--small" for="input-hover-opacity">Opacity</label>
+            <input type="range" id="input-hover-opacity" class="slider" min="1" max="100" value="50" />
+            <span id="hover-opacity-value" class="field__unit">50%</span>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button type="button" id="btn-save" class="btn btn--primary">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M11.5 12.5H2.5a1 1 0 01-1-1V2.5a1 1 0 011-1H10l2.5 2.5v8a1 1 0 01-1 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M4 1.5v3h5.5v-3M4 12.5V8.5h6v4" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
+        Save Settings
+      </button>
+
+      <!-- Row inspector mode toggle -->
+      <button type="button" id="btn-row-check" class="btn btn--check">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <line x1="1" y1="5" x2="13" y2="5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="1" y1="9" x2="13" y2="9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+          <circle cx="7" cy="7" r="0.8" fill="currentColor"/>
+        </svg>
+        Row Inspector
+      </button>
+
+      <div class="site-actions">
+        <button type="button" id="btn-apply" class="btn btn--apply">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M4.5 6.5l1.5 1.5 2.5-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Apply to this site
+        </button>
+
+        <button type="button" id="btn-remove" class="btn btn--remove">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M4.5 4.5l4 4M8.5 4.5l-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Remove from this site
+        </button>
+      </div>
+    </div>
+
+    <!-- Status toast -->
+    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+    <!-- Copyright footer -->
+    <footer class="popup__footer">
+      <a href="https://github.com/hoangkhacphuc" target="_blank" rel="noopener" class="popup__footer-link">
+        <!-- GitHub mark icon -->
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+            -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+            .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+            -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27
+            .68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
+            .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        hoangkhacphuc
+      </a>
+    </footer>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

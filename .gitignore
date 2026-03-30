@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build outputs (CSS is compiled from LESS, keep it in repo for extension loading)
+# popup/popup.css is intentionally committed – Chrome extension loads it directly
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temp
+*.tmp
+*.temp

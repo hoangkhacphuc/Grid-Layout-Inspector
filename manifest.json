@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Grid Layout Inspector",
+  "version": "1.0.0",
+  "description": "Overlay a customizable column grid on any web page for precise alignment.",
+  "author": "hoangkhacphuc",
+  "homepage_url": "https://github.com/hoangkhacphuc/Grid-Layout-Inspector",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16":  "images/icon16.png",
+      "32":  "images/icon32.png",
+      "48":  "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16":  "images/icon16.png",
+    "32":  "images/icon32.png",
+    "48":  "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background/background.js"
+  }
+}

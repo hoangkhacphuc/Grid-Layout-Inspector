@@ -1,0 +1,6 @@
+/* Content script base styles – no visual impact, just resets for overlay */
+#grid-layout-inspector-overlay * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
